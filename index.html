@@ -1,0 +1,450 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For My Chitti 💗</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    color: #783b56;
+    background: linear-gradient(135deg, #fff0f5, #ffe1ec, #fff7fa);
+    overflow-x: hidden;
+}
+
+header {
+    padding: 60px 15px 30px;
+}
+
+h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    color: #e75480;
+    margin: 10px;
+}
+
+h2 {
+    color: #d94375;
+}
+
+p {
+    line-height: 1.8;
+}
+
+button {
+    border: none;
+    border-radius: 30px;
+    padding: 13px 25px;
+    margin: 8px;
+    background: #e75480;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #d94375;
+    transform: scale(1.06);
+}
+
+section {
+    padding: 35px 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.message {
+    background: #ffffffdd;
+    border-radius: 25px;
+    padding: 30px;
+    margin: 20px auto;
+    max-width: 650px;
+    box-shadow: 0 5px 25px #e7a5bf44;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.photo {
+    background: white;
+    padding: 10px 10px 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px #e7a5bf55;
+    transform: rotate(-2deg);
+    transition: 0.3s;
+}
+
+.photo:nth-child(even) {
+    transform: rotate(2deg);
+}
+
+.photo:hover {
+    transform: rotate(0deg) scale(1.04);
+}
+
+.photo img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.music {
+    background: #ffffffdd;
+    padding: 30px;
+    border-radius: 25px;
+    max-width: 550px;
+    margin: auto;
+    box-shadow: 0 5px 25px #e7a5bf44;
+}
+
+audio {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.music-icon {
+    font-size: 45px;
+    animation: beat 1s infinite;
+}
+
+@keyframes beat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+footer {
+    padding: 30px;
+    color: #d94375;
+}
+
+.heart {
+    position: fixed;
+    bottom: -30px;
+    animation: float 6s linear forwards;
+    pointer-events: none;
+    z-index: 10;
+}
+
+@keyframes float {
+    to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@media(max-width:600px) {
+    .photo img {
+        height: 220px;
+    }
+
+    .message {
+        padding: 20px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HOME -->
+
+<header>
+
+    <div style="font-size:50px">💗</div>
+
+    <h1>Hey, My Chitti!</h1>
+
+    <p>A little surprise made just for you ❤️</p>
+
+    <button onclick="openSurprise()">
+        Open Your Surprise 💌
+    </button>
+
+</header>
+
+
+<!-- LOVE MESSAGE -->
+
+<section>
+
+    <div class="message" id="surprise">
+
+        <h2>You're My Favorite Person 🌷</h2>
+
+        <p>
+            Every little moment with you becomes a beautiful memory.
+            Your smile makes my day brighter, and your happiness
+            means everything to me.
+        </p>
+
+        <p>
+            If I could choose a thousand times,
+            I would still choose you. 💕
+        </p>
+
+        <h3>Forever grateful to have you! 🥰</h3>
+
+    </div>
+
+</section>
+
+
+<!-- PHOTO GALLERY -->
+
+<section>
+
+    <h2>Our Little Memories 📸</h2>
+
+    <p>Every picture tells a story, and my favorite stories are with you.</p>
+
+    <div class="gallery">
+
+        <div class="photo">
+
+            <img
+            src="Snapchat-360521276.jpg"
+            alt="Our memory 1">
+
+            <p>My Favorite Person 💗</p>
+
+        </div>
+
+
+        <div class="photo">
+
+            <img
+            src="Snapchat-600537584.jpg"
+            alt="Our memory 2">
+
+            <p>You Make My World Beautiful 🌸</p>
+
+        </div>
+
+
+        <div class="photo">
+
+            <img
+            src="Snapchat-1356207618.jpg"
+            alt="Our memory 3">
+
+            <p>Every Moment With You 💕</p>
+
+        </div>
+
+
+        <div class="photo">
+
+            <img
+            src="Snapchat-1691763558.jpg"
+            alt="Our memory 4">
+
+            <p>You Are My Sunshine ☀️</p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- MUSIC PLAYER -->
+
+<section>
+
+    <h2>Our Special Song 🎶</h2>
+
+    <div class="music">
+
+        <div class="music-icon">🎧</div>
+
+        <h3>Just For You, Chitti 💗</h3>
+
+        <p>
+            Close your eyes, listen to this song,
+            and think about our beautiful memories.
+        </p>
+
+        <audio id="song" controls loop preload="auto">
+
+            <source
+            src="Hey-Rangule-SnapYT.App.mp3"
+            type="audio/mpeg">
+
+            Your browser does not support audio.
+
+        </audio>
+
+        <p style="font-size:13px">
+            Made with love ❤️
+        </p>
+
+        <p id="musicStatus" style="font-size:13px">
+            🎵 Tap anywhere on this page to start our song.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- FINAL SURPRISE -->
+
+<section>
+
+    <div class="message">
+
+        <h2>One Last Thing... 💖</h2>
+
+        <p>
+            You are my favorite notification,
+            my happiest thought, and my sweetest memory.
+        </p>
+
+        <p>
+            No matter what happens,
+            keep smiling because your smile is precious. 🌷
+        </p>
+
+        <h3>Thank You For Being My Chitti! 🥰</h3>
+
+        <button onclick="sendHug()">
+            Click For A Hug 🤗
+        </button>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    Made with endless love, just for you 💗
+
+    <p>Forever Your Favorite Person ❤️</p>
+
+</footer>
+
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+// Surprise button
+
+function openSurprise() {
+
+    document.getElementById("surprise").scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+// Hug button
+
+function sendHug() {
+
+    alert("Sending you the biggest hug, Chitti! 🤗💗");
+
+}
+
+
+// MUSIC AUTO START ON FIRST TAP
+
+const song = document.getElementById("song");
+const musicStatus = document.getElementById("musicStatus");
+
+song.volume = 0.7;
+
+let musicStarted = false;
+
+function startMusic() {
+
+    if (musicStarted) return;
+
+    song.play().then(() => {
+
+        musicStarted = true;
+
+        musicStatus.textContent = "🎶 Playing our special song 💗";
+
+    }).catch(() => {
+
+        musicStatus.textContent =
+            "🎵 Tap the play button to start our song.";
+
+    });
+
+}
+
+// First interaction starts the song
+
+document.addEventListener("click", startMusic, { once: true });
+
+document.addEventListener("touchstart", startMusic, {
+    once: true,
+    passive: true
+});
+
+
+// Update music status
+
+song.addEventListener("play", function() {
+
+    musicStarted = true;
+    musicStatus.textContent = "🎶 Playing our special song 💗";
+
+});
+
+song.addEventListener("pause", function() {
+
+    musicStatus.textContent = "⏸ Song paused";
+
+});
+
+
+// Floating hearts animation
+
+setInterval(function() {
+
+    const heart = document.createElement("div");
+
+    heart.className = "heart";
+
+    heart.innerHTML = ["💗", "💕", "💖", "🌸", "❤️"][
+        Math.floor(Math.random() * 5)
+    ];
+
+    heart.style.left = Math.random() * 100 + "vw";
+
+    heart.style.fontSize = (15 + Math.random() * 25) + "px";
+
+    document.body.appendChild(heart);
+
+    setTimeout(function() {
+        heart.remove();
+    }, 6000);
+
+}, 500);
+
+</script>
+
+</body>
+</html>
