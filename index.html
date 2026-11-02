@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +9,6 @@
 <title>For My Chitti 💗</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
@@ -73,20 +72,24 @@ section {
     box-shadow: 0 5px 25px #e7a5bf44;
 }
 
+/* PHOTO GALLERY */
+
 .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
     margin-top: 30px;
+    align-items: start;
 }
 
 .photo {
+    min-width: 0;
     background: white;
-    padding: 10px 10px 20px;
+    padding: 10px 10px 18px;
     border-radius: 15px;
     box-shadow: 0 5px 20px #e7a5bf55;
     transform: rotate(-2deg);
-    transition: 0.3s;
+    transition: transform 0.3s ease;
 }
 
 .photo:nth-child(even) {
@@ -94,15 +97,25 @@ section {
 }
 
 .photo:hover {
-    transform: rotate(0deg) scale(1.04);
+    transform: rotate(0deg) scale(1.03);
 }
 
 .photo img {
+    display: block;
     width: 100%;
-    height: 250px;
-    object-fit: cover;
+    aspect-ratio: 3 / 4;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    background: #fff5f8;
     border-radius: 10px;
 }
+
+.photo p {
+    margin: 12px 4px 0;
+}
+
+/* MUSIC PLAYER */
 
 .music {
     background: #ffffffdd;
@@ -118,20 +131,37 @@ audio {
     margin-top: 15px;
 }
 
+#songTimestamp {
+    font-size: 15px;
+    color: #d94375;
+    font-weight: bold;
+    margin: 12px 0;
+    letter-spacing: 1px;
+}
+
 .music-icon {
     font-size: 45px;
     animation: beat 1s infinite;
 }
 
 @keyframes beat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
 }
+
+/* FOOTER */
 
 footer {
     padding: 30px;
     color: #d94375;
 }
+
+/* FLOATING HEARTS */
 
 .heart {
     position: fixed;
@@ -148,9 +178,26 @@ footer {
     }
 }
 
-@media(max-width:600px) {
+/* MOBILE RESPONSIVE */
+
+@media (max-width: 600px) {
+
+    .gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .photo {
+        padding: 7px 7px 12px;
+    }
+
     .photo img {
-        height: 220px;
+        aspect-ratio: 3 / 4;
+    }
+
+    .photo p {
+        font-size: 14px;
+        line-height: 1.5;
     }
 
     .message {
@@ -158,6 +205,11 @@ footer {
     }
 }
 
+@media (max-width: 360px) {
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+}
 </style>
 </head>
 
@@ -217,46 +269,23 @@ footer {
     <div class="gallery">
 
         <div class="photo">
-
-            <img
-            src="Snapchat-360521276.jpg"
-            alt="Our memory 1">
-
+            <img src="Snapchat-360521276.jpg" alt="Our memory 1">
             <p>My Favorite Person 💗</p>
-
         </div>
 
-
         <div class="photo">
-
-            <img
-            src="Snapchat-600537584.jpg"
-            alt="Our memory 2">
-
+            <img src="Snapchat-600537584.jpg" alt="Our memory 2">
             <p>You Make My World Beautiful 🌸</p>
-
         </div>
 
-
         <div class="photo">
-
-            <img
-            src="Snapchat-1356207618.jpg"
-            alt="Our memory 3">
-
+            <img src="Snapchat-1356207618.jpg" alt="Our memory 3">
             <p>Every Moment With You 💕</p>
-
         </div>
 
-
         <div class="photo">
-
-            <img
-            src="Snapchat-1691763558.jpg"
-            alt="Our memory 4">
-
+            <img src="Snapchat-1691763558.jpg" alt="Our memory 4">
             <p>You Are My Sunshine ☀️</p>
-
         </div>
 
     </div>
@@ -281,15 +310,17 @@ footer {
             and think about our beautiful memories.
         </p>
 
-        <audio id="song" controls loop preload="auto">
+        <audio id="song" controls loop preload="metadata">
 
             <source
-            src="Hey-Rangule-SnapYT.App.mp3"
-            type="audio/mpeg">
+                src="Hey-Rangule-SnapYT.App.mp3"
+                type="audio/mpeg">
 
             Your browser does not support audio.
 
         </audio>
+
+        <p id="songTimestamp">00:21 / 00:00</p>
 
         <p style="font-size:13px">
             Made with love ❤️
@@ -346,7 +377,7 @@ footer {
 
 <script>
 
-// Surprise button
+// SURPRISE BUTTON
 
 function openSurprise() {
 
@@ -357,7 +388,7 @@ function openSurprise() {
 }
 
 
-// Hug button
+// HUG BUTTON
 
 function sendHug() {
 
@@ -366,24 +397,84 @@ function sendHug() {
 }
 
 
-// MUSIC AUTO START ON FIRST TAP
+// MUSIC SETTINGS
 
 const song = document.getElementById("song");
 const musicStatus = document.getElementById("musicStatus");
+const songTimestamp = document.getElementById("songTimestamp");
 
 song.volume = 0.7;
 
+// Song starting point: 21 seconds
+
+const START_TIME = 21;
+
 let musicStarted = false;
+
+
+// FORMAT SONG TIME
+
+function formatTime(seconds) {
+
+    if (!Number.isFinite(seconds)) {
+        return "00:00";
+    }
+
+    const minutes = Math.floor(seconds / 60);
+
+    const remainingSeconds = Math.floor(seconds % 60);
+
+    return `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
+
+}
+
+
+// UPDATE TIMESTAMP
+
+function updateSongTimestamp() {
+
+    songTimestamp.textContent =
+        `${formatTime(song.currentTime)} / ${formatTime(song.duration)}`;
+
+}
+
+
+// START SONG FROM 00:21
 
 function startMusic() {
 
     if (musicStarted) return;
 
+    // Wait until audio metadata is available
+
+    if (song.readyState < 1) {
+
+        musicStatus.textContent = "🎵 Loading our special song...";
+
+        song.addEventListener("loadedmetadata", startMusic, {
+            once: true
+        });
+
+        return;
+
+    }
+
+    // Set starting timestamp
+
+    if (song.currentTime < START_TIME) {
+
+        song.currentTime = START_TIME;
+
+    }
+
     song.play().then(() => {
 
         musicStarted = true;
 
-        musicStatus.textContent = "🎶 Playing our special song 💗";
+        musicStatus.textContent =
+            "🎶 Playing our special song from 00:21 💗";
+
+        updateSongTimestamp();
 
     }).catch(() => {
 
@@ -394,9 +485,12 @@ function startMusic() {
 
 }
 
-// First interaction starts the song
 
-document.addEventListener("click", startMusic, { once: true });
+// FIRST USER INTERACTION STARTS MUSIC
+
+document.addEventListener("click", startMusic, {
+    once: true
+});
 
 document.addEventListener("touchstart", startMusic, {
     once: true,
@@ -404,12 +498,14 @@ document.addEventListener("touchstart", startMusic, {
 });
 
 
-// Update music status
+// UPDATE MUSIC STATUS
 
 song.addEventListener("play", function() {
 
     musicStarted = true;
-    musicStatus.textContent = "🎶 Playing our special song 💗";
+
+    musicStatus.textContent =
+        "🎶 Playing our special song 💗";
 
 });
 
@@ -420,7 +516,16 @@ song.addEventListener("pause", function() {
 });
 
 
-// Floating hearts animation
+// UPDATE TIMESTAMP EVENTS
+
+song.addEventListener("timeupdate", updateSongTimestamp);
+
+song.addEventListener("loadedmetadata", updateSongTimestamp);
+
+song.addEventListener("durationchange", updateSongTimestamp);
+
+
+// FLOATING HEARTS ANIMATION
 
 setInterval(function() {
 
@@ -428,18 +533,21 @@ setInterval(function() {
 
     heart.className = "heart";
 
-    heart.innerHTML = ["💗", "💕", "💖", "🌸", "❤️"][
+    heart.textContent = ["💗", "💕", "💖", "🌸", "❤️"][
         Math.floor(Math.random() * 5)
     ];
 
     heart.style.left = Math.random() * 100 + "vw";
 
-    heart.style.fontSize = (15 + Math.random() * 25) + "px";
+    heart.style.fontSize =
+        (15 + Math.random() * 25) + "px";
 
     document.body.appendChild(heart);
 
     setTimeout(function() {
+
         heart.remove();
+
     }, 6000);
 
 }, 500);
@@ -448,3 +556,4 @@ setInterval(function() {
 
 </body>
 </html>
+```
