@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +8,7 @@
 <title>For My Chitti 💗</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -62,6 +62,8 @@ section {
     max-width: 1000px;
     margin: auto;
 }
+
+/* LOVE MESSAGE */
 
 .message {
     background: #ffffffdd;
@@ -161,7 +163,7 @@ footer {
     color: #d94375;
 }
 
-/* FLOATING HEARTS */
+/* FLOATING BACKGROUND HEARTS */
 
 .heart {
     position: fixed;
@@ -172,6 +174,98 @@ footer {
 }
 
 @keyframes float {
+    to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* CUTE HUG ANIMATION */
+
+.hug-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 192, 203, 0.90);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    animation: fadeIn 0.4s ease;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.hug-content {
+    position: relative;
+    z-index: 2;
+    background: white;
+    padding: 35px 20px;
+    border-radius: 30px;
+    max-width: 350px;
+    width: 100%;
+    box-shadow: 0 10px 40px #e7548066;
+    animation: hugPop 0.7s ease;
+}
+
+.hug-teddies {
+    font-size: 65px;
+    animation: teddyHug 1s infinite alternate;
+}
+
+.hug-message {
+    color: #e75480;
+    font-size: 23px;
+    font-weight: bold;
+    animation: bounce 1s infinite;
+}
+
+.hug-heart {
+    position: absolute;
+    bottom: -40px;
+    font-size: 30px;
+    pointer-events: none;
+    animation: heartFly 3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes hugPop {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes teddyHug {
+    from {
+        transform: scale(1) rotate(-5deg);
+    }
+
+    to {
+        transform: scale(1.12) rotate(5deg);
+    }
+}
+
+@keyframes bounce {
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+@keyframes heartFly {
     to {
         transform: translateY(-110vh) rotate(360deg);
         opacity: 0;
@@ -210,6 +304,7 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
 </style>
 </head>
 
@@ -388,11 +483,81 @@ function openSurprise() {
 }
 
 
-// HUG BUTTON
+// HUG BUTTON ANIMATION
 
 function sendHug() {
 
-    alert("Sending you the biggest hug, Chitti! 🤗💗");
+    // Avoid creating multiple overlays
+
+    if (document.querySelector(".hug-overlay")) return;
+
+    const overlay = document.createElement("div");
+
+    overlay.className = "hug-overlay";
+
+    overlay.innerHTML = `
+        <div class="hug-content">
+
+            <div class="hug-teddies">
+                🧸💕🧸
+            </div>
+
+            <h2 class="hug-message">
+                BIG HUG FOR YOU!
+            </h2>
+
+            <p>
+                Come here, Chitti! 🤗💗
+            </p>
+
+            <p>
+                Sending you unlimited love,
+                warm hugs and endless happiness! 🌷
+            </p>
+
+            <button onclick="closeHug()">
+                Awww! 💖
+            </button>
+
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+
+    // CREATE FLYING HEARTS
+
+    for (let i = 0; i < 25; i++) {
+
+        const heart = document.createElement("div");
+
+        heart.className = "hug-heart";
+
+        heart.textContent = ["💗", "💕", "💖", "❤️", "😘"][
+            Math.floor(Math.random() * 5)
+        ];
+
+        heart.style.left = Math.random() * 100 + "vw";
+
+        heart.style.animationDelay =
+            Math.random() * 1.5 + "s";
+
+        overlay.appendChild(heart);
+
+    }
+
+}
+
+
+// CLOSE HUG ANIMATION
+
+function closeHug() {
+
+    const overlay = document.querySelector(".hug-overlay");
+
+    if (overlay) {
+        overlay.remove();
+    }
 
 }
 
@@ -400,16 +565,20 @@ function sendHug() {
 // MUSIC SETTINGS
 
 const song = document.getElementById("song");
+
 const musicStatus = document.getElementById("musicStatus");
+
 const songTimestamp = document.getElementById("songTimestamp");
 
 song.volume = 0.7;
 
-// Song starting point: 21 seconds
+// SONG STARTING POINT: 21 SECONDS
 
 const START_TIME = 21;
 
 let musicStarted = false;
+
+let musicStartPending = false;
 
 
 // FORMAT SONG TIME
@@ -429,37 +598,50 @@ function formatTime(seconds) {
 }
 
 
-// UPDATE TIMESTAMP
+// UPDATE SONG TIMESTAMP
 
 function updateSongTimestamp() {
 
+    let currentTime = song.currentTime;
+
+    // Display 00:21 before playback begins
+
+    if (!musicStarted && currentTime < START_TIME) {
+        currentTime = START_TIME;
+    }
+
     songTimestamp.textContent =
-        `${formatTime(song.currentTime)} / ${formatTime(song.duration)}`;
+        `${formatTime(currentTime)} / ${formatTime(song.duration)}`;
 
 }
 
 
-// START SONG FROM 00:21
+// START MUSIC FROM 00:21
 
 function startMusic() {
 
-    if (musicStarted) return;
+    if (musicStarted || musicStartPending) return;
 
-    // Wait until audio metadata is available
+    musicStartPending = true;
 
     if (song.readyState < 1) {
 
-        musicStatus.textContent = "🎵 Loading our special song...";
+        musicStatus.textContent =
+            "🎵 Loading our special song...";
 
-        song.addEventListener("loadedmetadata", startMusic, {
-            once: true
-        });
+        song.addEventListener("loadedmetadata", function() {
+
+            musicStartPending = false;
+
+            startMusic();
+
+        }, { once: true });
 
         return;
 
     }
 
-    // Set starting timestamp
+    // Set song starting timestamp
 
     if (song.currentTime < START_TIME) {
 
@@ -471,12 +653,16 @@ function startMusic() {
 
         musicStarted = true;
 
+        musicStartPending = false;
+
         musicStatus.textContent =
             "🎶 Playing our special song from 00:21 💗";
 
         updateSongTimestamp();
 
     }).catch(() => {
+
+        musicStartPending = false;
 
         musicStatus.textContent =
             "🎵 Tap the play button to start our song.";
@@ -498,11 +684,13 @@ document.addEventListener("touchstart", startMusic, {
 });
 
 
-// UPDATE MUSIC STATUS
+// MUSIC STATUS
 
 song.addEventListener("play", function() {
 
     musicStarted = true;
+
+    musicStartPending = false;
 
     musicStatus.textContent =
         "🎶 Playing our special song 💗";
@@ -516,7 +704,7 @@ song.addEventListener("pause", function() {
 });
 
 
-// UPDATE TIMESTAMP EVENTS
+// TIMESTAMP EVENTS
 
 song.addEventListener("timeupdate", updateSongTimestamp);
 
@@ -525,7 +713,7 @@ song.addEventListener("loadedmetadata", updateSongTimestamp);
 song.addEventListener("durationchange", updateSongTimestamp);
 
 
-// FLOATING HEARTS ANIMATION
+// FLOATING BACKGROUND HEARTS
 
 setInterval(function() {
 
@@ -556,4 +744,3 @@ setInterval(function() {
 
 </body>
 </html>
-```
